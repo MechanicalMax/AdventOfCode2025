@@ -1,4 +1,5 @@
 from math import log10
+import re
 
 with open('input/day2.txt') as f:
     lines = f.read().strip()
@@ -22,6 +23,18 @@ def part1(rangeString = lines):
             currentInvalidId = createInvalidId(startRepeatedDigit)
     return sum(invalidIds)
 
-# exampleInput = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124"
+def part2(rangeString = lines):
+    repeatingNumbers = re.compile(r'^(\d+)\1+$')
+    ranges = rangeString.split(',')
+    fullInvalidIds = set()
+    for r in ranges:
+        start, end = map(int, r.split('-'))
+        for i in range(start, end + 1):
+            re.match(repeatingNumbers, str(i)) and fullInvalidIds.add(i) and print(i)
+    return sum(fullInvalidIds)
+
+exampleInput = "11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124"
 # print(part1(exampleInput))
+# print(part2(exampleInput))
 print(part1())
+print(part2())
