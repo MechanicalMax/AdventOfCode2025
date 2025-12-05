@@ -20,18 +20,31 @@ def part1(input = data):
                 break
     return count
 
-example = [
-    "3-5",
-    "10-14",
-    "16-20",
-    "12-18",
-    "",
-    "1",
-    "5",
-    "8",
-    "11",
-    "17",
-    "32",
-]
-print(part1(example))
+def part2(input = data):
+    ranges, _ = parse_input(input)
+    merged_ranges = []
+    for start, end in sorted(ranges):
+        if not merged_ranges or merged_ranges[-1][1] < start - 1:
+            merged_ranges.append([start, end])
+        else:
+            merged_ranges[-1][1] = max(merged_ranges[-1][1], end)
+    count_covered = lambda ranges: sum(end - start + 1 for start, end in ranges)
+    return count_covered(merged_ranges)
+
+# example = [
+#     "3-5",
+#     "10-14",
+#     "16-20",
+#     "12-18",
+#     "",
+#     "1",
+#     "5",
+#     "8",
+#     "11",
+#     "17",
+#     "32",
+# ]
+# print(part1(example))
+# print(part2(example))
 print(part1())
+print(part2())
