@@ -58,6 +58,29 @@ def part1(data = input, K = 1000):
 
     return sizes[0] * sizes[1] * sizes[2]
 
+def part2(data = input):
+    allPoints = getPoints(data)
+    n = len(allPoints)
+
+    edges = []
+    for i in range(n):
+        for j in range(i + 1, n):
+            edges.append((distanceBetweenPoints(allPoints[i], allPoints[j]), allPoints[i], allPoints[j]))
+
+    heapq.heapify(edges)
+
+    dsu = DSU(allPoints)
+    circuits = n
+    last_edge = None
+    
+    while circuits > 1 and edges:
+        _, point, otherPoint = heapq.heappop(edges)
+        if dsu.union(point, otherPoint):
+            circuits -= 1
+            last_edge = (point, otherPoint)
+
+    return last_edge[0][0] * last_edge[1][0]
+
 example = [
     "162,817,812",
     "57,618,57",
@@ -80,5 +103,7 @@ example = [
     "984,92,344",
     "425,690,689",
 ]
-print(part1(example, 10))
+# print(part1(example, 10))
+# print(part2(example))
 print(part1())
+print(part2())
